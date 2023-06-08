@@ -1,9 +1,9 @@
-package com.codecool.dungeoncrawl.logic;
+package com.codecool.dungeoncrawl.logic.engine;
 
 public enum CellType {
-    EMPTY("empty"),
-    FLOOR("floor"),
-    WALL("wall"),
+    VOID("void"),
+    WALKABLE("walkable"),
+    UNWALKABLE("unwalkable"),
     ENEMY("enemy");
 
     private final String tileName;

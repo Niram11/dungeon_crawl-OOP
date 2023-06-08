@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
-import com.codecool.dungeoncrawl.logic.Cell;
+
+import com.codecool.dungeoncrawl.logic.engine.Cell;
 
 public class Ogre extends Actor {
     private int health = 15;

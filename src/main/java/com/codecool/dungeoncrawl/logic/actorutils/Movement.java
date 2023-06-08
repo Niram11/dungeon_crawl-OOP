@@ -1,6 +1,8 @@
-package com.codecool.dungeoncrawl.logic;
+package com.codecool.dungeoncrawl.logic.actorutils;
 
 import com.codecool.dungeoncrawl.logic.actors.Ogre;
+import com.codecool.dungeoncrawl.logic.engine.Cell;
+import com.codecool.dungeoncrawl.logic.engine.GameMap;
 
 public class Movement {
     public boolean isMovePossible(GameMap map, int[] vector) {

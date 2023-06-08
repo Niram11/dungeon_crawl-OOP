@@ -2,12 +2,14 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.engine.CellType;
+import com.codecool.dungeoncrawl.logic.engine.GameMap;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ActorTest {
-    GameMap gameMap = new GameMap(3, 3, CellType.FLOOR);
+    GameMap gameMap = new GameMap(3, 3, CellType.WALKABLE);
 
     @Test
     void moveUpdatesCells() {
@@ -22,7 +24,7 @@ class ActorTest {
 
     @Test
     void cannotMoveIntoWall() {
-        gameMap.getCell(2, 1).setType(CellType.WALL);
+        gameMap.getCell(2, 1).setType(CellType.UNWALKABLE);
         Player player = new Player(gameMap.getCell(1, 1));
         player.move(1, 0);
 
