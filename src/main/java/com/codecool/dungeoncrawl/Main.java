@@ -1,6 +1,8 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.logic.actors.Ogre;
 import com.codecool.dungeoncrawl.logic.actorutils.KeyArrowCoordinates;
+import com.codecool.dungeoncrawl.logic.actorutils.Movement;
 import com.codecool.dungeoncrawl.logic.engine.Cell;
 import com.codecool.dungeoncrawl.logic.engine.GameMap;
 import com.codecool.dungeoncrawl.logic.filemanagement.MapLoader;
@@ -17,7 +19,8 @@ import javafx.scene.text.Text;
 import javafx.stage.*;
 
 public class Main extends Application {
-    GameMap map = MapLoader.loadMap();
+    MapLoader mapLoader = new MapLoader();
+    GameMap map = mapLoader.loadMap();
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -89,6 +92,10 @@ public class Main extends Application {
 //                getModalInventory(primaryStage);
 //            }
         }
+            Movement movement = new Movement();
+            for (Ogre ogre : mapLoader.getOgres()) {
+                movement.goToPatrolPlace(ogre, map);
+            }
 //    private void onKeyPressed(KeyEvent keyEvent) {
 //        Movement movement = new Movement();
 //        switch (keyEvent.getCode()) {
