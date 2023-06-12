@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.logic.actors.Mage;
 import com.codecool.dungeoncrawl.logic.actors.Ogre;
 import com.codecool.dungeoncrawl.logic.actorutils.KeyArrowCoordinates;
 import com.codecool.dungeoncrawl.logic.actorutils.Movement;
@@ -92,9 +93,13 @@ public class Main extends Application {
 //                getModalInventory(primaryStage);
 //            }
         }
+        //TODO: move to separate function
             Movement movement = new Movement();
             for (Ogre ogre : mapLoader.getOgres()) {
-                movement.goToPatrolPlace(ogre, map);
+                movement.goToPatrolPlace(map, ogre);
+            }
+            for (Mage mage : mapLoader.getMages()){
+                movement.guard(map, mage);
             }
 //    private void onKeyPressed(KeyEvent keyEvent) {
 //        Movement movement = new Movement();

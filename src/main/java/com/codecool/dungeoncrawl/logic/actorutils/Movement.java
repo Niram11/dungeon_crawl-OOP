@@ -19,6 +19,7 @@ public class Movement {
     }
 
     public void setPatrolPlaces(Ogre ogre) {
+        //TODO: move to ogre class?
         int positionY = ogre.getY();
         int positionX = ogre.getX();
         int[] firstPlace = new int[]{positionY, positionX - 3};
@@ -27,12 +28,11 @@ public class Movement {
         ogre.setPatrolDestination(patrolDestination);
     }
 
-    public void goToPatrolPlace(Ogre ogre, GameMap map) {
+    public void goToPatrolPlace(GameMap map, Ogre ogre) {
         int positionX = ogre.getX();
         int positionY = ogre.getY();
 
         int[] patrolDestination = ogre.getPatrolDestination();
-        int[] firstPlace = ogre.getFirstPlace();
         if (positionX - patrolDestination[1] == 0) {
             switchPatrol(ogre);
         } else {
@@ -42,7 +42,6 @@ public class Movement {
                 if (isMovePossible(map, moveVector, positionX, positionY) || vector[0] == 0) {
                     ogre.move(-1, 0);
                 } else {
-                    System.out.println("im gere");
                     switchPatrol(ogre);
                 }
             } else {
@@ -50,7 +49,6 @@ public class Movement {
                 if (isMovePossible(map, moveVector, positionX, positionY) || vector[0] == 0) {
                     ogre.move(1, 0);
                 } else {
-                    System.out.println("im here");
                     switchPatrol(ogre);
                 }
             }
@@ -58,9 +56,18 @@ public class Movement {
         }
     }
 
-    public boolean isPlayerNear(GameMap map, Mage mage) {
+    public void guard(GameMap map, Mage mage) {
         int playerPositionX = map.getPlayer().getX();
         int playerPositionY = map.getPlayer().getY();
+        int[] vector = new int[] {playerPositionX - mage.getX(), playerPositionY - mage.getY()};
+
+        int dx = Integer.compare(vector[0], 0);
+        int dy = Integer.compare(vector[1], 0);
+        if (isPlayerNear(map, mage, playerPositionX, playerPositionY)) {
+        mage.move(dx, dy);
+        }
+    }
+    public boolean isPlayerNear(GameMap map, Mage mage, int playerPositionX, int playerPositionY) {
         int[] vector = new int[]{playerPositionX - mage.getX(), playerPositionY - mage.getY()};
         return vector[0] + vector[1] >= 5;
     }

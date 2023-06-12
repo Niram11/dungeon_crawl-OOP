@@ -20,6 +20,8 @@ import java.util.Scanner;
 
 public class MapLoader {
     private List<Ogre> ogres = new ArrayList<>();
+    private List<Mage> mages = new ArrayList<>();
+
 
     public GameMap loadMap() {
         Movement movement = new Movement();
@@ -79,7 +81,8 @@ public class MapLoader {
                             break;
                         case 'M':
 //                            cell.setType(CellType.ENEMY);
-                            new Mage(cell);
+                            Mage mage = new Mage(cell);
+                            mages.add(mage);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
@@ -92,5 +95,9 @@ public class MapLoader {
 
     public List<Ogre> getOgres() {
         return ogres;
+    }
+
+    public List<Mage> getMages() {
+        return mages;
     }
 }
