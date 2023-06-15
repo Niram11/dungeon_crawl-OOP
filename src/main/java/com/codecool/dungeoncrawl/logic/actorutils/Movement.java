@@ -1,9 +1,12 @@
 package com.codecool.dungeoncrawl.logic.actorutils;
 
+import com.codecool.dungeoncrawl.Main;
+import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Mage;
 import com.codecool.dungeoncrawl.logic.actors.Ogre;
 import com.codecool.dungeoncrawl.logic.engine.Cell;
 import com.codecool.dungeoncrawl.logic.engine.GameMap;
+import com.codecool.dungeoncrawl.logic.filemanagement.MapLoader;
 
 public class Movement {
     public boolean isMovePossible(GameMap map, int[] vector, int positionX, int positionY) {
@@ -11,11 +14,11 @@ public class Movement {
         return !Cell.getType().getTileName().equals("unwalkable");
     }
 
-    public boolean isEnemyThere(GameMap map, int[] vector) {
+    public boolean isPlayerThere(GameMap map, int[] vector, int positionX, int positionY) {
         int playerX = map.getPlayer().getX();
         int playerY = map.getPlayer().getY();
-        Cell nextCell = map.getCell(playerX + vector[0], playerY + vector[1]);
-        return !nextCell.getType().getTileName().equals("enemy");
+
+        return positionX + vector[0] == playerX && positionY + vector[1] == playerY;
     }
 
     public void setPatrolPlaces(Ogre ogre) {
@@ -39,14 +42,18 @@ public class Movement {
             int[] vector = new int[]{positionX - patrolDestination[1]};
             if (vector[0] > 0) {
                 int[] moveVector = new int[]{-1, 0};
-                if (isMovePossible(map, moveVector, positionX, positionY) || vector[0] == 0) {
+                if (isPlayerThere(map, moveVector, positionX, positionY)) {
+                    attackPlayer(map, ogre);
+                } else if (isMovePossible(map, moveVector, positionX, positionY) || vector[0] == 0) {
                     ogre.move(-1, 0);
                 } else {
                     switchPatrol(ogre);
                 }
             } else {
                 int[] moveVector = new int[]{1, 0};
-                if (isMovePossible(map, moveVector, positionX, positionY) || vector[0] == 0) {
+                if (isPlayerThere(map, moveVector, positionX, positionY)) {
+                    attackPlayer(map, ogre);
+                } else if (isMovePossible(map, moveVector, positionX, positionY) || vector[0] == 0) {
                     ogre.move(1, 0);
                 } else {
                     switchPatrol(ogre);
@@ -59,17 +66,39 @@ public class Movement {
     public void guard(GameMap map, Mage mage) {
         int playerPositionX = map.getPlayer().getX();
         int playerPositionY = map.getPlayer().getY();
-        int[] vector = new int[] {playerPositionX - mage.getX(), playerPositionY - mage.getY()};
+        int[] vector = new int[]{playerPositionX - mage.getX(), playerPositionY - mage.getY()};
 
         int dx = Integer.compare(vector[0], 0);
         int dy = Integer.compare(vector[1], 0);
-        if (isPlayerNear(map, mage, playerPositionX, playerPositionY)) {
-        mage.move(dx, dy);
+        int[] moveVector = new int[]{dx, dy};
+        if (isPlayerThere(map, moveVector, mage.getX(), mage.getY())) {
+            attackPlayer(map, mage);
+        } else if (isPlayerNear(mage, playerPositionX, playerPositionY)) {
+            mage.move(dx, dy);
         }
     }
-    public boolean isPlayerNear(GameMap map, Mage mage, int playerPositionX, int playerPositionY) {
-        int[] vector = new int[]{playerPositionX - mage.getX(), playerPositionY - mage.getY()};
-        return vector[0] + vector[1] >= 5;
+
+    public boolean isPlayerNear(Mage mage, int playerPositionX, int playerPositionY) {
+        int[] distance = new int[]{Math.abs(mage.getX() - playerPositionX), Math.abs(mage.getY() - playerPositionY)};
+        return 5 >= distance[0] && 5 >= distance[1];
+    }
+
+    private void attackPlayer(GameMap map, Actor actor) {
+        int playerHp = map.getPlayer().getHealth();
+        map.getPlayer().setHealth(playerHp - actor.getAttack());
+//        int actorHp = actor.getHealth();
+//        actor.setHealth(actorHp - map.getPlayer().getAttack());
+        System.out.println(actor.getHealth());
+        if (actor.isDead()) {
+            if (actor instanceof Mage) {
+                MapLoader.mages.remove(actor);
+            } else if (actor instanceof Ogre) {
+                MapLoader.ogres.remove(actor);
+            }
+//            Cell cell = map.getCell(actor.getX(), actor.getY());
+//            cell.setActor(null);
+
+        }
     }
 
     private void switchPatrol(Ogre ogre) {

@@ -70,6 +70,7 @@ public class Main extends Application {
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
     }
+
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP, W -> {
@@ -93,14 +94,7 @@ public class Main extends Application {
 //                getModalInventory(primaryStage);
 //            }
         }
-        //TODO: move to separate function
-            Movement movement = new Movement();
-            for (Ogre ogre : mapLoader.getOgres()) {
-                movement.goToPatrolPlace(map, ogre);
-            }
-            for (Mage mage : mapLoader.getMages()){
-                movement.guard(map, mage);
-            }
+        enemiesTurn();
 //    private void onKeyPressed(KeyEvent keyEvent) {
 //        Movement movement = new Movement();
 //        switch (keyEvent.getCode()) {
@@ -178,5 +172,19 @@ public class Main extends Application {
         StringBuilder inventoryTextBuilder = new StringBuilder();
         map.getPlayer().getEquipment().getInventory().forEach(item -> inventoryTextBuilder.append(item.getClass().getSimpleName()).append("\n"));
         inventoryText.setText(String.valueOf(inventoryTextBuilder));
+    }
+
+    private void enemiesTurn() {
+        Movement movement = new Movement();
+        try {
+            for (Ogre ogre : mapLoader.getOgres()) {
+                movement.goToPatrolPlace(map, ogre);
+            }
+            for (Mage mage : mapLoader.getMages()) {
+                movement.guard(map, mage);
+            }
+        } catch (Exception e) {
+
+        }
     }
 }

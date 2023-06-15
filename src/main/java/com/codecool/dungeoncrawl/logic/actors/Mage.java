@@ -7,15 +7,17 @@ import com.codecool.dungeoncrawl.logic.engine.CellType;
 import java.util.Objects;
 
 public class Mage extends Actor {
-    private int health = 5;
+
     public Mage(Cell cell) {
         super(cell);
+        this.setHealth(5);
     }
 
     @Override
     public String getTileName() {
         return "mage";
     }
+
     public void move(int dx, int dy) {
         Cell nextCell = getCell().getNeighbor(dx, dy);
         if (nextCell.getType() == CellType.UNWALKABLE) {

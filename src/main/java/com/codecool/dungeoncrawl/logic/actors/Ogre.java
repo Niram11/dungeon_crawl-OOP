@@ -7,11 +7,11 @@ import com.codecool.dungeoncrawl.logic.engine.CellType;
 import java.util.Objects;
 
 public class Ogre extends Actor {
-    private int health = 15;
     private int[] firstPlace;
     private int[] patrolDestination;
     public Ogre(Cell cell) {
         super(cell);
+        this.setHealth(15);
     }
 
     @Override

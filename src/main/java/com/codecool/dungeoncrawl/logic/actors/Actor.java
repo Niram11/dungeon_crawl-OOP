@@ -3,7 +3,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.engine.Cell;
 import com.codecool.dungeoncrawl.logic.engine.Drawable;
 
-public abstract class Actor implements Drawable{
+public abstract class Actor implements Drawable {
     private Cell cell;
     private int health = 10;
     private int defense = 1;
@@ -19,7 +19,7 @@ public abstract class Actor implements Drawable{
     }
 
     public boolean isDead() {
-        return health == 0;
+        return health <= 0;
     }
 
     public void setCell(Cell cell) {
@@ -29,6 +29,7 @@ public abstract class Actor implements Drawable{
     public void setHealth(int health) {
         this.health = health;
     }
+
     public void setDefense(int defense) {
         this.defense = defense;
     }
@@ -56,6 +57,7 @@ public abstract class Actor implements Drawable{
     public int getY() {
         return cell.getY();
     }
+
     public int getAttack() {
         return attack;
     }

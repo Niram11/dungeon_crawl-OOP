@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MapLoader {
-    private List<Ogre> ogres = new ArrayList<>();
-    private List<Mage> mages = new ArrayList<>();
+    public static List<Ogre> ogres = new ArrayList<>();
+    public static List<Mage> mages = new ArrayList<>();
 
 
     public GameMap loadMap() {
